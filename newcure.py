@@ -7,6 +7,7 @@ import datetime
 import random
 import matplotlib
 from matplotlib.dates import datestr2num
+import streamlit
 
 
 def get_price(ccy1, ccy2):
@@ -23,12 +24,10 @@ amount = float(input("Please enter amount:"))
 price = get_price(ccy1, ccy2)
 exchange_rate = price * amount
 print("Price for" + ccy1 + ccy2 + "is" + str(exchange_rate))
-
-def get_price_from_service(ccy1, ccy2):
-    return 4.295
+print("Price for 1" + ccy1 + ccy2 + "is" + str(price))
 
 def get_price_history(ccy1, ccy2, startDate, endDate):
-    price = get_price_from_service(ccy1, ccy2)
+    price = get_price (ccy1, ccy2)
     my_date = startDate
     history = dict()
     while my_date <= endDate:
@@ -39,23 +38,23 @@ def get_price_history(ccy1, ccy2, startDate, endDate):
 
 startDate = datetime.date(2024, 10, 1)
 endDate = datetime.date(2024, 10, 30)
-price_history = get_price_history('EUR','USD', startDate, endDate)
+price_history = get_price_history(ccy1, ccy2, startDate, endDate)
 average = sum(price_history.values())/len(price_history)
 print ("Average for the month is" + str(average))
 
-Q1 = input("Do you want to sell chosen currency or buy?:").upper()
+q1 = input("Do you want to sell chosen currency or buy?:").upper()
 
-if Q1 == "SELL":
-    if exchange_rate > average:
+if q1 == "SELL":
+    if price > average:
         print("Good time to change")
-    elif exchange_rate == average:
+    elif price == average:
         print("Average price for the last month")
     else:
         print("Not the best time to change")
-elif Q1 == "BUY":
-    if exchange_rate > average:
+elif q1 == "BUY":
+    if price > average:
         print("Maybe not today")
-    elif exchange_rate == average:
+    elif price == average:
         print("Average price for the last month")
     else:
         print("Good time to buy, price lower than usual")
